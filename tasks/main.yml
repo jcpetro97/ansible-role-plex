@@ -1,0 +1,22 @@
+---
+- name: 'Add the Plex apt signing key'
+  apt_key:
+    url: 'https://downloads.plex.tv/plex-keys/PlexSign.key'
+    state: 'present'
+
+- name: 'Add the Plex Ubuntu repo'
+  apt_repository:
+    repo: 'deb https://downloads.plex.tv/repo/deb public main'
+    state: 'present'
+
+- name: 'Install the latest version of Plex Media Server'
+  apt:
+    name: 'plexmediaserver'
+    state: 'latest'
+  notify: 'RestartPlex'
+
+- name: 'Start the plexmediaserver daemon'
+  service:
+    name: 'plexmediaserver'
+    state: 'started'
+    enabled: 'yes'
